@@ -18,10 +18,11 @@ if __name__ == '__main__':
 			i += 1
 			list_all += listing
 
-	info_ads = dict()
+	info_ads = []
 
 	for i in list_all:
-		print(get_ad_info(i)) #imprime as informações resgatadas no anuncio
+		info_ads.append(get_ad_info(i)) #imprime as informações resgatadas no anuncio
 
 	#TODO: persistir a base de dados de anuncios resgatos em um arquivo .csv
-
+	df = pd.DataFrame(lista)
+	df.to_csv('resultados.csv')

@@ -33,12 +33,15 @@ def get_ad_info(url=''):
 
 	#checa se a página foi carregada com sucesso
 	if r.status_code == 200:
-		soup = BeautifulSoup(r.text, 'html.parser') #faz o parse da página HTML
-		info = dict() #instancia o dicionário que será retornado
-		info['tilulo'] = soup.findAll('h1', {'class': 'OLXad-title'})[0].string #inclui o titulo do anuncio no DICT
-		info['preco'] = soup.findAll('span', {'class': 'actual-price'})[0].string #inclui o preço do anuncio no DICT
-		#TODO: inclui demais metadados do anuncio no DICT
-		return info
+		try:
+			soup = BeautifulSoup(r.text, 'html.parser') #faz o parse da página HTML
+			info = dict() #instancia o dicionário que será retornado
+			info['tilulo'] = soup.findAll('h1', {'class': 'OLXad-title'})[0].string #inclui o titulo do anuncio no DICT
+			info['preco'] = soup.findAll('span', {'class': 'actual-price'})[0].string #inclui o preço do anuncio no DICT
+			#TODO: inclui demais metadados do anuncio no DICT
+			return info
+		except IndexError:
+			return {}
 	#em caso de falha no carregamento da página retorna DICT vazio
 	else:
 		return {}
