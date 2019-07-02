@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
 	pare_o_loop = True #condicao para finalizar o while que resgata a lista de links de produtos
 	list_all = [] #lista de urls de produtos
-	i = 99 #contador de página
+	i = 1 #contador de página
 
 	while pare_o_loop:
 		print('tentando resgatar a lista ' + str(i))
