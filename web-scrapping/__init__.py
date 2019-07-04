@@ -19,12 +19,19 @@ if __name__ == '__main__':
 			i += 1
 			list_all += listing
 
+	print('tentando resgatar metadados de ' + str(len(list_all)) + ' anuncios...')
+	print('vai demorarr...')
+
 	info_ads = []
 
+	count = 0
+	
 	for i in list_all:
-		info_ads.append(get_ad_info(i)) #imprime as informações resgatadas no anuncio
+		info_ads.append(get_ad_info(i))
+		count += 1
+		print ('(' + str(count) + '/' + str(len(list_all)) + ')')
 
-	#TODO: persistir a base de dados de anuncios resgatos em um arquivo .csv
+
 	df = pd.DataFrame(info_ads).dropna()
 
 	df['preco'] = df['preco'].str.replace('[R$ .]', '')
@@ -32,7 +39,26 @@ if __name__ == '__main__':
 	df['tilulo'] = df['tilulo'].str.replace('([\n\t])', '')
 	df['tilulo'] = df['tilulo'].str.replace('(\s{3,})', '')
 
+	df['bairro'] = df['bairro'].str.replace('([\n\t])', '')
+	df['bairro'] = df['bairro'].str.replace('(\s{3,})', '')
+
+	df['cep'] = df['cep'].str.replace('([\n\t])', '')
+	df['cep'] = df['cep'].str.replace('(\s{3,})', '')
+
+	df['cidade'] = df['cidade'].str.replace('([\n\t])', '')
+	df['cidade'] = df['cidade'].str.replace('(\s{3,})', '')
+
+	df['descricao'] = df['descricao'].str.replace('([\n\t])', '')
+	df['descricao'] = df['descricao'].str.replace('(\s{3,})', ' ')
+
+	df['estado'] = df['estado'].str.replace('([\n\t])', '')
+	df['estado'] = df['estado'].str.replace('(\s{3,})', ' ')
+
+	df['tipo'] = df['tipo'].str.replace('([\n\t])', '')
+	df['tipo'] = df['tipo'].str.replace('(\s{3,})', ' ')
+
 	df['preco'] = df['preco'].astype(str).astype(int)
-    
-    
+
+	print(df)
+
 	df.to_csv('resultados.csv')

@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 def get_list_of_ads(url=''):
 	#realiza request na pagina
 	r = requests.get(url)
+	#print(r.status_code)
 
 	#checa se a pagina foi recebida com sucesso
 	if r.status_code == 200:
@@ -33,12 +34,24 @@ def get_ad_info(url=''):
 
 	#checa se a página foi carregada com sucesso
 	if r.status_code == 200:
+		#print('tentando regastar dados de ' + url)
 		try:
 			soup = BeautifulSoup(r.text, 'html.parser') #faz o parse da página HTML
 			info = dict() #instancia o dicionário que será retornado
 			info['tilulo'] = soup.findAll('h1', {'class': 'OLXad-title'})[0].string #inclui o titulo do anuncio no DICT
 			info['preco'] = soup.findAll('span', {'class': 'actual-price'})[0].string #inclui o preço do anuncio no DICT
-			#TODO: inclui demais metadados do anuncio no DICT
+			info['descricao'] = soup.findAll('div', {'class': 'OLXad-description mb30px'})[0].find('p').getText()
+			
+			detalhes = soup.findAll('div', {'class': 'OLXad-details mb30px'})
+			detalhes = detalhes[0].findAll('strong', {'class': 'description'})
+			info['tipo'] = detalhes[0].getText()
+			info['estado'] = detalhes[1].getText()
+			
+			localizacao = soup.findAll('div', {'class': 'OLXad-location mb20px'})
+			localizacao = localizacao[0].findAll('strong', {'class': 'description'})
+			info['cidade'] = localizacao[0].getText()
+			info['cep'] = localizacao[1].getText()
+			info['bairro'] = localizacao[2].getText()
 			return info
 		except IndexError:
 			return {}
