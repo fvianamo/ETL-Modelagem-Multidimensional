@@ -424,6 +424,19 @@
     <partitionschemas>
     </partitionschemas>
     <slaveservers>
+      <slaveserver>
+        <name>slave1</name>
+        <hostname>localhost</hostname>
+        <port>8081</port>
+        <webAppName/>
+        <username>cluster</username>
+        <password>Encrypted 2be98afc86aa7f2e4cb1aa265cd86aac8</password>
+        <proxy_hostname/>
+        <proxy_port/>
+        <non_proxy_hosts/>
+        <master>N</master>
+        <sslMode>N</sslMode>
+      </slaveserver>
     </slaveservers>
     <clusterschemas>
     </clusterschemas>
@@ -445,16 +458,6 @@
     <hop>
       <from>Split fields</from>
       <to>logradouro?</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>logradouro?</from>
-      <to>Dummy (do nothing) 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Dummy (do nothing) 2</from>
-      <to>quebra cidade</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -524,7 +527,22 @@
     </hop>
     <hop>
       <from>Select values 5</from>
-      <to>Dummy (do nothing)</to>
+      <to>junk</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Value mapper</from>
+      <to>result</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter rows</from>
+      <to>junk</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>logradouro?</from>
+      <to>quebra cidade</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -539,7 +557,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename>/home/thiagolink/Desktop/ETL/Atividade ETL/ImoveisVivareal.csv</filename>
+    <filename>${Internal.Entry.Current.Directory}/ImoveisVivareal.csv</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
@@ -750,7 +768,7 @@
     </GUI>
   </step>
   <step>
-    <name>Dummy (do nothing)</name>
+    <name>junk</name>
     <type>Dummy</type>
     <description/>
     <distribute>Y</distribute>
@@ -775,31 +793,6 @@
     </GUI>
   </step>
   <step>
-    <name>Dummy (do nothing) 2</name>
-    <type>Dummy</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>480</xloc>
-      <yloc>208</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>Filter rows</name>
     <type>FilterRows</type>
     <description/>
@@ -811,7 +804,7 @@
       <schema_name/>
     </partitioning>
     <send_true_to>Select values 5</send_true_to>
-    <send_false_to/>
+    <send_false_to>junk</send_false_to>
     <compare>
       <condition>
         <negated>N</negated>
@@ -1294,8 +1287,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>320</xloc>
-      <yloc>336</yloc>
+      <xloc>480</xloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1542,7 +1535,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>320</xloc>
+      <xloc>480</xloc>
       <yloc>448</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1894,7 +1887,7 @@
       <schema_name/>
     </partitioning>
     <send_true_to>Select values</send_true_to>
-    <send_false_to>Dummy (do nothing) 2</send_false_to>
+    <send_false_to>quebra cidade</send_false_to>
     <compare>
       <condition>
         <negated>N</negated>
@@ -1982,14 +1975,239 @@
     </remotesteps>
     <GUI>
       <xloc>480</xloc>
-      <yloc>336</yloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>result</name>
+    <type>TextFileOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <separator>;</separator>
+    <enclosure>"</enclosure>
+    <enclosure_forced>N</enclosure_forced>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
+    <header>Y</header>
+    <footer>N</footer>
+    <format>DOS</format>
+    <compression>None</compression>
+    <encoding/>
+    <endedLine/>
+    <fileNameInField>N</fileNameInField>
+    <fileNameField/>
+    <create_parent_folder>N</create_parent_folder>
+    <file>
+      <name>${Internal.Entry.Current.Directory}/result</name>
+      <servlet_output>N</servlet_output>
+      <do_not_open_new_file_init>N</do_not_open_new_file_init>
+      <extention>txt</extention>
+      <append>N</append>
+      <split>N</split>
+      <haspartno>N</haspartno>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format/>
+      <add_to_result_filenames>Y</add_to_result_filenames>
+      <pad>N</pad>
+      <fast_dump>N</fast_dump>
+      <splitevery/>
+    </file>
+    <fields>
+      <field>
+        <name>logradouro</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>bairro</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>cidade</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>taxa</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>9</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>Area</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>6</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>quartos</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>4</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>suites</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>3</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>banheiros</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>2</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>vagas</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>12</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>preco</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>12</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>somatorio_comodos</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>area_comodo</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>preco_area</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>Zona</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>10</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1328</xloc>
+      <yloc>448</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step_error_handling>
     <error>
       <source_step>Select values 5</source_step>
-      <target_step>Dummy (do nothing)</target_step>
+      <target_step>junk</target_step>
       <is_enabled>Y</is_enabled>
       <nr_valuename/>
       <descriptions_valuename/>
